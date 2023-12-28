@@ -1,0 +1,28 @@
+{
+  "name": "com.reshyl.stats",
+  "version": "0.1.0",
+  "displayName": "Stats",
+  "description": "A fairly simple RPG-like Stats system for Unity.",
+  "unity": "2019.1",
+  "keywords": [
+    "unity",
+    "rpg stats",
+    "stats",
+    "stat system",
+    "ScriptableObject"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reshyl/stats.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/reshyl/stats#readme",
+  "bugs": {
+    "url": "https://github.com/reshyl/stats/issues"
+  },
+  "author": {
+    "name": "Reshyl",
+    "email": "reshyl.dev@gmail.com",
+    "url": "https://github.com/reshyl"
+  }
+}
