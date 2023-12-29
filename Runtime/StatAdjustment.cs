@@ -10,9 +10,7 @@ namespace Reshyl.Stats
         [Serializable]
         public class AdjustmentModifier
         {
-            public StatDefinition targetStat;
-            public bool useIdInstead;
-            public string targetStatId;
+            public ModifierTarget target;
             public float value;
             public ModifierType type;
         }
@@ -35,9 +33,7 @@ namespace Reshyl.Stats
                 var modifier = new Modifier
                 {
                     id = id,
-                    targetStat = adjustment.targetStat,
-                    useIdInstead = adjustment.useIdInstead,
-                    targetStatId = adjustment.targetStatId,
+                    target = adjustment.target,
                     value = adjustment.value,
                     type = adjustment.type,
                     order = order

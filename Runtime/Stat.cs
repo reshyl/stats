@@ -79,14 +79,14 @@ namespace Reshyl.Stats
         {
             modifiers ??= new List<Modifier>();
 
-            if (modifier.useIdInstead)
+            if (modifier.target.useId)
             {
-                if (modifier.targetStatId != definition.id)
+                if (modifier.target.statId != definition.id)
                     return false;
             }
             else
             {
-                if (modifier.targetStat != definition)
+                if (modifier.target.stat != definition)
                     return false;
             }
 

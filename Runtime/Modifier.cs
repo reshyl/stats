@@ -6,9 +6,7 @@ namespace Reshyl.Stats
     public class Modifier
     {
         public string id;
-        public StatDefinition targetStat;
-        public bool useIdInstead;
-        public string targetStatId;
+        public ModifierTarget target;
         public float value;
         public ModifierType type;
         public int order;

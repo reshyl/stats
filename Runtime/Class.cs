@@ -6,6 +6,7 @@ namespace Reshyl.Stats
     [CreateAssetMenu(menuName = "Stats/Class")]
     public class Class : ScriptableObject
     {
+        public Modifier modifier;
         public List<Stat> stats;
 
         public Class GetRuntimeClass()
@@ -44,10 +45,10 @@ namespace Reshyl.Stats
         {
             Stat stat;
 
-            if (modifier.useIdInstead)
-                stat = GetStat(modifier.targetStatId);
+            if (modifier.target.useId)
+                stat = GetStat(modifier.target.statId);
             else
-                stat = GetStat(modifier.targetStat);
+                stat = GetStat(modifier.target.stat);
 
             if (stat == null)
                 return false;
@@ -91,10 +92,10 @@ namespace Reshyl.Stats
         {
             Stat stat;
 
-            if (modifier.useIdInstead)
-                stat = GetStat(modifier.targetStatId);
+            if (modifier.target.useId)
+                stat = GetStat(modifier.target.statId);
             else
-                stat = GetStat(modifier.targetStat);
+                stat = GetStat(modifier.target.stat);
 
             if (stat == null)
                 return false;
