@@ -6,15 +6,11 @@ namespace Reshyl.Stats
     [CreateAssetMenu(menuName = "Stats/Class")]
     public class Class : ScriptableObject
     {
-        public Modifier modifier;
         public List<Stat> stats;
 
-        public Class GetRuntimeClass()
+        public Class GetRuntimeCopy()
         {
-            var copy = ScriptableObject.CreateInstance<Class>();
-            copy.stats = stats;
-
-            return copy;
+            return ScriptableObject.Instantiate(this);
         }
 
         public virtual bool HasStat(string id)

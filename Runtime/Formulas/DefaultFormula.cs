@@ -7,6 +7,8 @@ namespace Reshyl.Stats
     [CreateAssetMenu(menuName = "Stats/Default Formula")]
     public class DefaultFormula : Formula
     {
+        public bool roundResult = false;
+
         public override float CalculateValue(float baseValue, IEnumerable<Modifier> modifiers)
         {
             var flatModifiers = modifiers.Where(m => m.type == ModifierType.Flat);
@@ -21,6 +23,9 @@ namespace Reshyl.Stats
             finalValue += flatSum;
             finalValue *= 1f + (percentSum / 100f);
             finalValue *= 1f + multiplierSum;
+
+            if (roundResult)
+                finalValue = Mathf.RoundToInt(finalValue);
 
             return finalValue;
         }
