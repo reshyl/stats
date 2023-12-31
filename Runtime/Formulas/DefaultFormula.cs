@@ -4,10 +4,15 @@ using UnityEngine;
 
 namespace Reshyl.Stats
 {
-    [CreateAssetMenu(menuName = "Stats/Default Formula")]
+    /// <summary>
+    /// The most simple formula for calculating the value of a Stat.
+    /// Adds all flat modifiers first, then applies percent modifiers, and finally
+    /// multiplies the final value with (the sum of) all multiplier modifiers.
+    /// </summary>
+    [CreateAssetMenu(menuName = "Stats/Default Formula", fileName = "Default Formula")]
     public class DefaultFormula : Formula
     {
-        public bool roundResult = false;
+        public bool roundResultToInt = false;
 
         public override float CalculateValue(float baseValue, IEnumerable<Modifier> modifiers)
         {
@@ -24,7 +29,7 @@ namespace Reshyl.Stats
             finalValue *= 1f + (percentSum / 100f);
             finalValue *= 1f + multiplierSum;
 
-            if (roundResult)
+            if (roundResultToInt)
                 finalValue = Mathf.RoundToInt(finalValue);
 
             return finalValue;

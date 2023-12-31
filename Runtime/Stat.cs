@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Reshyl.Stats
 {
     [Serializable]
     public class Stat
     {
-        public StatDefinition definition;
-        public bool overrideBaseValue = false;
-        public float newBaseValue = 0f;
+        [SerializeField] protected StatDefinition definition;
+        [SerializeField] protected bool overrideBaseValue = false;
+        [SerializeField] protected float newBaseValue = 0f;
 
         protected float cachedValue;
         protected bool isDirty = true;
@@ -19,22 +20,22 @@ namespace Reshyl.Stats
         /// has been overwritten.
         /// </summary>
         public virtual float BaseValue => GetBaseValue();
-
         /// <summary>
         /// The current value of the Stat, using applied modifiers.
         /// </summary>
+        
         public virtual float Value => GetValue();
-
-        public string ID => definition.id;
-
+        public StatDefinition Definition => definition;
+        public string ID => Definition.id;
+        
         /// <summary>
         /// The formula being used to calculate the value. Can be used to calculate the value manually.
         /// </summary>
-        public Formula Formula => definition.formula;
+        public Formula Formula => Definition.formula;
 
         protected virtual float GetBaseValue()
         {
-            var baseValue = overrideBaseValue ? newBaseValue : definition.baseValue;
+            var baseValue = overrideBaseValue ? newBaseValue : Definition.baseValue;
             return baseValue;
         }
 
@@ -81,12 +82,12 @@ namespace Reshyl.Stats
 
             if (modifier.target.useId)
             {
-                if (modifier.target.statId != definition.id)
+                if (modifier.target.statId != Definition.id)
                     return false;
             }
             else
             {
-                if (modifier.target.stat != definition)
+                if (modifier.target.stat != Definition)
                     return false;
             }
 

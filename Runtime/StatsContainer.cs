@@ -6,7 +6,7 @@ namespace Reshyl.Stats
     [CreateAssetMenu(menuName = "Stats/Stats Container")]
     public class StatsContainer : ScriptableObject
     {
-        public List<Stat> stats;
+        [SerializeField] private List<Stat> stats;
 
         public StatsContainer GetRuntimeCopy()
         {
@@ -18,9 +18,21 @@ namespace Reshyl.Stats
             return GetStat(id) != null;
         }
 
+        public virtual bool HasStat(string id, out Stat stat)
+        {
+            stat = GetStat(id);
+            return stat != null;
+        }
+
         public virtual bool HasStat(StatDefinition definition)
         {
             return GetStat(definition) != null;
+        }
+
+        public virtual bool HasStat(StatDefinition definition, out Stat stat)
+        {
+            stat = GetStat(definition);
+            return stat != null;
         }
 
         public virtual Stat GetStat(string id)
@@ -30,7 +42,7 @@ namespace Reshyl.Stats
 
         public virtual Stat GetStat(StatDefinition definition)
         {
-            return stats.Find(s => s.definition == definition);
+            return stats.Find(s => s.Definition == definition);
         }
 
         /// <summary>
