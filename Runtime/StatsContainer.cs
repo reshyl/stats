@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Reshyl.Stats
 {
-    [CreateAssetMenu(menuName = "Stats/Class")]
-    public class Class : ScriptableObject
+    [CreateAssetMenu(menuName = "Stats/Stats Container")]
+    public class StatsContainer : ScriptableObject
     {
         public List<Stat> stats;
 
-        public Class GetRuntimeCopy()
+        public StatsContainer GetRuntimeCopy()
         {
             return ScriptableObject.Instantiate(this);
         }
