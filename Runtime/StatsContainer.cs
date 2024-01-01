@@ -6,44 +6,53 @@ namespace Reshyl.Stats
     [CreateAssetMenu(menuName = "Stats/Stats Container")]
     public class StatsContainer : ScriptableObject
     {
+        [SerializeField] private List<Attribute> attributes;
         [SerializeField] private List<Stat> stats;
 
         public StatsContainer GetRuntimeCopy()
         {
-            return ScriptableObject.Instantiate(this);
+            var copy = ScriptableObject.Instantiate(this);
+            copy.stats.ForEach(s => s.Setup());
+            copy.attributes.ForEach(a => a.Setup(copy));
+
+            return copy;
         }
 
-        public virtual bool HasStat(string id)
+        //-------- Utility functions to get Stats --------
+
+        public bool HasStat(string id)
         {
             return GetStat(id) != null;
         }
 
-        public virtual bool HasStat(string id, out Stat stat)
+        public bool HasStat(string id, out Stat stat)
         {
             stat = GetStat(id);
             return stat != null;
         }
 
-        public virtual bool HasStat(StatDefinition definition)
+        public bool HasStat(StatDefinition definition)
         {
             return GetStat(definition) != null;
         }
 
-        public virtual bool HasStat(StatDefinition definition, out Stat stat)
+        public bool HasStat(StatDefinition definition, out Stat stat)
         {
             stat = GetStat(definition);
             return stat != null;
         }
 
-        public virtual Stat GetStat(string id)
+        public Stat GetStat(string id)
         {
             return stats.Find(s => s.ID == id);
         }
 
-        public virtual Stat GetStat(StatDefinition definition)
+        public Stat GetStat(StatDefinition definition)
         {
             return stats.Find(s => s.Definition == definition);
         }
+
+        //-------- Shortcuts to managing modifiers on Stats --------
 
         /// <summary>
         /// Find the Stat this modifier targets and add it to said Stat.
@@ -164,6 +173,40 @@ namespace Reshyl.Stats
                 return false;
 
             return stat.RemoveAllModifiers();
+        }
+
+        //-------- Utility functions to get Attributes --------
+
+        public bool HasAttribute(string id)
+        {
+            return GetAttribute(id) != null;
+        }
+
+        public bool HasAttribute(string id, out Attribute attribute)
+        {
+            attribute = GetAttribute(id);
+            return attribute != null;
+        }
+
+        public bool HasAttribute(AttributeDefinition definition)
+        {
+            return GetAttribute(definition) != null;
+        }
+
+        public bool HasAttribute(AttributeDefinition definition, out Attribute attribute)
+        {
+            attribute = GetAttribute(definition);
+            return attribute != null;
+        }
+
+        public Attribute GetAttribute(string id)
+        {
+            return attributes.Find(a => a.ID == id);
+        }
+
+        public Attribute GetAttribute(AttributeDefinition definition)
+        {
+            return attributes.Find(a => a.Definition == definition);
         }
     }
 }

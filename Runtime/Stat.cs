@@ -12,19 +12,9 @@ namespace Reshyl.Stats
         [SerializeField] protected float newBaseValue = 0f;
 
         protected float cachedValue;
-        protected bool isDirty = true;
-        protected List<Modifier> modifiers = new List<Modifier>();
+        protected bool isDirty;
+        protected List<Modifier> modifiers;
 
-        /// <summary>
-        /// The base value of the Stat, without any modifiers. Takes into consideration if it
-        /// has been overwritten.
-        /// </summary>
-        public virtual float BaseValue => GetBaseValue();
-        /// <summary>
-        /// The current value of the Stat, using applied modifiers.
-        /// </summary>
-        
-        public virtual float Value => GetValue();
         public StatDefinition Definition => definition;
         public string ID => Definition.id;
         
@@ -32,6 +22,17 @@ namespace Reshyl.Stats
         /// The formula being used to calculate the value. Can be used to calculate the value manually.
         /// </summary>
         public Formula Formula => Definition.formula;
+
+        /// <summary>
+        /// The base value of the Stat, without any modifiers. Takes into consideration if it
+        /// has been overwritten.
+        /// </summary>
+        public virtual float BaseValue => GetBaseValue();
+
+        /// <summary>
+        /// The current value of the Stat, using applied modifiers.
+        /// </summary>
+        public virtual float Value => GetValue();
 
         protected virtual float GetBaseValue()
         {
@@ -48,6 +49,16 @@ namespace Reshyl.Stats
             }
 
             return cachedValue;
+        }
+
+        /// <summary>
+        /// Initilize this Stat, not entirely necessary but can be used to refresh it.
+        /// </summary>
+        public virtual void Setup()
+        {
+            cachedValue = BaseValue;
+            isDirty = true;
+            modifiers = new List<Modifier>();
         }
 
         /// <summary>

@@ -2,8 +2,8 @@
 {
     public enum StatFieldType
     {
-        Stat,
-        StatID,
+        Definition,
+        ID,
         Float,
         Integer
     }

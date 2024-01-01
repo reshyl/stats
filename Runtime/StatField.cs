@@ -12,9 +12,11 @@ namespace Reshyl.Stats
     public class StatField
     {
         [SerializeField] private StatFieldType type;
-        [SerializeField] private StatDefinition stat;
+        [SerializeField] private StatDefinition definition;
         [SerializeField] private string statID;
         [SerializeField] private float staticValue;
+
+        private Stat cachedStat;
 
         /// <summary>
         /// Get the ID of the Stat assigned to this field. Returns "constant" if
@@ -22,9 +24,9 @@ namespace Reshyl.Stats
         /// </summary>
         public string GetID(StatsContainer stats)
         {
-            if (type == StatFieldType.Stat)
-                return stat.id;
-            else if (type == StatFieldType.StatID)
+            if (type == StatFieldType.Definition)
+                return definition == null ? string.Empty : definition.id;
+            else if (type == StatFieldType.ID)
                 return statID;
             else
                 return "constant";
@@ -32,18 +34,18 @@ namespace Reshyl.Stats
 
         /// <summary>
         /// Get the display name of the Stat assigned to this field. Returns "Constant" if 
-        /// the type is an int/float.
+        /// the type is an int/float, or an empty string if the Stat couldn't be found.
         /// </summary>
         public string GetDisplayName(StatsContainer stats)
         {
-            if (type == StatFieldType.Stat)
-                return stat.displayName;
-            else if (type == StatFieldType.StatID)
+            if (type == StatFieldType.Definition)
+                return definition == null ? string.Empty : definition.displayName;
+            else if (type == StatFieldType.ID)
             {
-                if (stats.HasStat(statID, out var stat))
-                    return stat.Definition.displayName;
+                if (GetStat(stats) != null)
+                    return cachedStat.Definition.displayName;
                 else
-                    return statID;
+                    return string.Empty;
             }
             else
                 return "Constant";
@@ -55,12 +57,20 @@ namespace Reshyl.Stats
         /// </summary>
         public Stat GetStat(StatsContainer stats)
         {
-            if (type == StatFieldType.Stat)
-                return stats.GetStat(stat);
-            else if (type == StatFieldType.StatID)
-                return stats.GetStat(statID);
-            else
+            if (type == StatFieldType.Float || type == StatFieldType.Integer)
                 return null;
+
+            if (cachedStat == null)
+            {
+                if (type == StatFieldType.Definition)
+                    cachedStat = stats.GetStat(definition);
+                else if (type == StatFieldType.ID)
+                    cachedStat = stats.GetStat(statID);
+                else
+                    cachedStat = null;
+            }
+
+            return cachedStat;
         }
 
         /// <summary>
@@ -69,28 +79,10 @@ namespace Reshyl.Stats
         /// </summary>
         public float GetValue(StatsContainer stats)
         {
-            var value = 0f;
+            if (type == StatFieldType.Float || type == StatFieldType.Integer)
+                return staticValue;
 
-            if (type == StatFieldType.Stat)
-            {
-                if (stats.HasStat(stat, out var statRef))
-                    value = statRef.Value;
-                else
-                    Debug.LogError(stats.name + " does not contain " + stat.id);
-            }
-            else if (type == StatFieldType.StatID)
-            {
-                if (stats.HasStat(statID, out var statRef))
-                    value = statRef.Value;
-                else
-                    Debug.LogError(stats.name + " does not contain " + statID);
-            }
-            else
-            {
-                value = staticValue;
-            }
-
-            return value;
+            return GetStat(stats).Value;
         }
 
         /// <summary>

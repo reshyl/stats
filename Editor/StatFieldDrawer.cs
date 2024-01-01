@@ -11,10 +11,13 @@ namespace ReshylEditor.Stats
         {
             EditorGUI.BeginProperty(position, label, property);
 
+            if (Application.isPlaying)
+                GUI.enabled = false;
+
             position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
 
             var typeProp = property.FindPropertyRelative("type");
-            var statProp = property.FindPropertyRelative("stat");
+            var statProp = property.FindPropertyRelative("definition");
             var statIdProp = property.FindPropertyRelative("statID");
             var valueProp = property.FindPropertyRelative("staticValue");
 
@@ -25,10 +28,10 @@ namespace ReshylEditor.Stats
 
             switch ((StatFieldType)typeProp.enumValueIndex)
             {
-                case StatFieldType.Stat:
+                case StatFieldType.Definition:
                     EditorGUI.PropertyField(statRect, statProp, GUIContent.none);
                     break;
-                case StatFieldType.StatID:
+                case StatFieldType.ID:
                     EditorGUI.PropertyField(statRect, statIdProp, GUIContent.none);
                     break;
                 case StatFieldType.Float:
@@ -39,6 +42,7 @@ namespace ReshylEditor.Stats
                     break;
             }
 
+            GUI.enabled = true;
             EditorGUI.EndProperty();
         }
     }

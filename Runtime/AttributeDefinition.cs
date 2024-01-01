@@ -1,9 +1,10 @@
+﻿using System;
 using UnityEngine;
 
 namespace Reshyl.Stats
 {
-    [CreateAssetMenu(menuName = "Stats/Stat Definition")]
-    public class StatDefinition : ScriptableObject
+    [CreateAssetMenu(menuName = "Stats/Attribute Definition")]
+    public class AttributeDefinition : ScriptableObject
     {
         [Header("Meta Data")]
         public string id;
@@ -12,7 +13,8 @@ namespace Reshyl.Stats
         public Sprite icon;
         public Color color = Color.white;
         [Header("Runtime")]
-        public float baseValue = 0f;
-        public Formula formula;
+        public float minValue = 0f;
+        public StatField maxValue;
+        [Range(0f, 1f)] public float startPercent = 1f;
     }
 }
