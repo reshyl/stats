@@ -17,6 +17,7 @@ namespace Reshyl.Stats
         [SerializeField] private float staticValue;
 
         private Stat cachedStat;
+        private StatsContainer cachedContainer;
 
         /// <summary>
         /// Get the ID of the Stat assigned to this field. Returns "constant" if
@@ -59,6 +60,16 @@ namespace Reshyl.Stats
         {
             if (type == StatFieldType.Float || type == StatFieldType.Integer)
                 return null;
+
+            //Make sure to refresh the cachedStat if the container is different
+            //(to reference the Stat from the new container).
+            //Only really a problem if the StatField is being used in the editor, so it'll get refreshed
+            //when switching to the runtime copy. 
+            if (cachedContainer == null || cachedContainer != stats)
+            {
+                cachedContainer = stats;
+                cachedStat = null;
+            }
 
             if (cachedStat == null)
             {

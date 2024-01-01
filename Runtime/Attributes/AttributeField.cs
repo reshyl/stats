@@ -11,6 +11,7 @@ namespace Reshyl.Stats
         [SerializeField] private string attributeID;
 
         private Attribute cachedAttribute;
+        private StatsContainer cachedContainer;
 
         /// <summary>
         /// Get the current Value of the attribute assigned to this field.
@@ -42,6 +43,14 @@ namespace Reshyl.Stats
         /// </summary>
         public Attribute GetAttribute(StatsContainer stats)
         {
+            //Refresh cachedAttribute if the container changed
+            //See GetStat() in StatField for explanation.
+            if (cachedAttribute == null || cachedContainer != stats)
+            {
+                cachedContainer = stats;
+                cachedAttribute = null;
+            }
+
             if (cachedAttribute == null)
             {
                 if (type == AttributeFieldType.Definition)
