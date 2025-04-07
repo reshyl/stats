@@ -34,6 +34,12 @@ namespace Reshyl.Stats
         /// </summary>
         public virtual float Value => GetValue();
 
+        public delegate void StatUpdatedEvent(float oldValue);
+        /// <summary>
+        /// Called whenever a modifier is added or removed from this Stat.
+        /// </summary>
+        public event StatUpdatedEvent OnStatUpdated;
+
         protected virtual float GetBaseValue()
         {
             var baseValue = overrideBaseValue ? newBaseValue : Definition.baseValue;
@@ -104,6 +110,7 @@ namespace Reshyl.Stats
 
             modifiers.Add(modifier);
             isDirty = true;
+            OnStatUpdated?.Invoke(cachedValue);
             return true;
         }
 
@@ -120,6 +127,7 @@ namespace Reshyl.Stats
             {
                 modifiers.Remove(modifier);
                 isDirty = true;
+                OnStatUpdated?.Invoke(cachedValue);
                 return true;
             }
             else

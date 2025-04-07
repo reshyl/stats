@@ -6,8 +6,8 @@ namespace Reshyl.Stats
     [CreateAssetMenu(menuName = "Stats/Stats Container")]
     public class StatsContainer : ScriptableObject
     {
-        [SerializeField] private List<Attribute> attributes;
-        [SerializeField] private List<Stat> stats;
+        [SerializeField] protected List<Attribute> attributes;
+        [SerializeField] protected List<Stat> stats;
 
         public StatsContainer GetRuntimeCopy()
         {
@@ -16,6 +16,12 @@ namespace Reshyl.Stats
             copy.attributes.ForEach(a => a.Setup(copy));
 
             return copy;
+        }
+
+        public void Dispose()
+        {
+            for (int i = attributes.Count - 1; i >= 0; i--)
+                attributes[i].Dispose();
         }
 
         //-------- Utility functions to get Stats --------

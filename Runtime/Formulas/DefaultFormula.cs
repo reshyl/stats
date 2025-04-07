@@ -13,6 +13,8 @@ namespace Reshyl.Stats
     public class DefaultFormula : Formula
     {
         public bool roundResultToInt = false;
+        [Tooltip("Assume percent modifiers are already divided by hundred.")]
+        public bool percentIsNormalized = false;
 
         public override float CalculateValue(float baseValue, IEnumerable<Modifier> modifiers)
         {
@@ -26,7 +28,12 @@ namespace Reshyl.Stats
 
             var finalValue = baseValue;
             finalValue += flatSum;
-            finalValue *= 1f + (percentSum / 100f);
+
+            if (percentIsNormalized)
+                finalValue *= 1f + percentSum;
+            else
+                finalValue *= 1f + (percentSum / 100f);
+            
             finalValue *= 1f + multiplierSum;
 
             if (roundResultToInt)

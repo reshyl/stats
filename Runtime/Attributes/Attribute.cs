@@ -38,6 +38,18 @@ namespace Reshyl.Stats
             maxValueIsStat = maxValueStat != null;
 
             currentValue = MaxValue * Definition.startPercent;
+
+            if (maxValueIsStat)
+                maxValueStat.OnStatUpdated += OnMaxValueStatUpdated;
+        }
+
+        public virtual void Dispose()
+        {
+            if (maxValueIsStat)
+                maxValueStat.OnStatUpdated -= OnMaxValueStatUpdated;
+
+            stats = null;
+            maxValueStat = null;
         }
 
         /// <summary>
@@ -49,6 +61,23 @@ namespace Reshyl.Stats
             currentValue += amount;
             currentValue = Mathf.Clamp(currentValue, MinValue, MaxValue);
             return currentValue;
+        }
+
+        protected virtual void OnMaxValueStatUpdated(float oldValue)
+        {
+            if (definition.onMaxValueChanged == MaxValueChangeBehavior.KeepValue)
+            {
+                currentValue = Mathf.Clamp(currentValue, MinValue, MaxValue);
+            }
+            else if (definition.onMaxValueChanged == MaxValueChangeBehavior.KeepPercent)
+            {
+                var percent = currentValue / oldValue;
+                currentValue = Mathf.Clamp(percent * MaxValue, MinValue, MaxValue);
+            }
+            else if (definition.onMaxValueChanged == MaxValueChangeBehavior.SetToMax)
+            {
+                currentValue = MaxValue;
+            }
         }
     }
 }

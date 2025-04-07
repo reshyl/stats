@@ -16,5 +16,16 @@ namespace Reshyl.Stats
         public float minValue = 0f;
         public StatField maxValue;
         [Range(0f, 1f)] public float startPercent = 1f;
+        public MaxValueChangeBehavior onMaxValueChanged;
+    }
+
+    public enum MaxValueChangeBehavior
+    {
+        [Tooltip("Keep the current value, but clamped to the new range.")]
+        KeepValue,
+        [Tooltip("Keep the current percent of the max value.")]
+        KeepPercent,
+        [Tooltip("Set the current value to the new max value.")]
+        SetToMax,
     }
 }
